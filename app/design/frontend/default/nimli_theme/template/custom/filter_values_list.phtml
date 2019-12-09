@@ -1,0 +1,22 @@
+<?php $param = $this->getRequest()->getParam('id', 0); ?>
+<?php $acceptable = array('brand', 'occasion', 'recipient', 'designer'); ?>
+<?php if(in_array($param, $acceptable)): ?>
+<?php
+define("ATTRIBUTE", $param);
+define("BASE_URL", Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
+
+$values = $this->getList(ATTRIBUTE);
+
+function getUrl($value)
+{
+	echo BASE_URL . 'product/' . ATTRIBUTE . '/' . $value; 
+}
+
+?>
+<div class="attribute_value_list">
+<?php foreach($values as $value): ?>
+<div><a href="<?php echo getUrl($value); ?>"><?php echo $value ?></a></div>
+<?php endforeach ?>
+</div>
+<div style="padding: 5px 0px; margin-top: 5px; border-top: 1px solid #DDD"></div>
+<?php endif; ?>

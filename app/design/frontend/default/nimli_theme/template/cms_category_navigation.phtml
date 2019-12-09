@@ -1,0 +1,44 @@
+<?php
+
+function getAboveCategories($value)
+{
+	$one_level_up = Mage::getModel('catalog/category')->load($value)->getParentId();
+	return Mage::getModel('catalog/category')->load($one_level_up)->getChildrenCategories();
+	
+}
+
+?>
+<?php
+$identifier = Mage::getSingleton('cms/page')->getIdentifier(); 
+if($identifier == 'beauty-wellness') $identifier = 'Beauty & Wellness';
+if($identifier == 'home-products') $identifier = 'Home';
+?>
+
+<?php $cms_category = Mage::getModel('catalog/category')->loadByAttribute('name', ucwords($identifier)); ?>
+<?php if($identifier == 'women') $cms_category = Mage::getModel('catalog/category')->load(18); //RESOLVE CONFLICT BETWEEN TWO WOMEN CATEGORIES ?>
+<?php if($cms_category): ?>
+<?php $categories = ($cms_category->hasChildren()) ? $cms_category->getChildrenCategories() : getAboveCategories($cms_category->getId()); ?>
+<?php $count = is_array($_categories)?count($categories):$categories->count(); ?>
+<?php if($count): ?>
+<div class="block block-layered-nav">
+    <div class="block-content">
+        <dl id="narrow-by-list2">
+            <?php //echo $this->__('Category') ?></dt>
+            <dd>
+                <ol>
+                <?php foreach ($categories as $category): ?>
+                    <?php if($category->getIsActive()): ?>
+                    <li>
+                        <a href="<?php echo $category->getUrl() ?>"><?php echo html_entity_decode($category->getName()) ?></a> 
+                    </li>
+                    <?php endif; ?>
+                <?php endforeach ?>
+                </ol>
+            </dd>
+        </dl>
+        <script type="text/javascript">decorateDataList('narrow-by-list2')</script>
+    </div>
+</div>
+<?php endif; ?>
+<div style="padding: 5px 0px; margin-top: 5px; border-top: 1px solid #DDD"></div>
+<?php endif; ?>

@@ -1,0 +1,108 @@
+
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2009 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $baseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>
+<div class="header-container">
+    <div class="header">
+        <?php if ($this->getIsHomePage()):?>
+        <h2 class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo">
+		
+		<!-- ***********IMAGE LOGO ************* -->
+		
+		<img alt="NIMLI" src="<?php echo $this->getSkinUrl('images/demo_store.jpg') ?>" alt="The Scarves Store" />
+		
+		<!-- ***********END IMAGE LOGO ************* -->
+		
+		</a></h2>
+        <?php else:?>
+        <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getSkinUrl('images/demo_store.jpg')//echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+        <?php endif?>
+        
+
+		<!-- ***********TOP RIGHT CORNER************* -->
+		<!-- Note: There are inline style sheets used here. Feel free to delete them and put the CSS rule into skin/default/scarves_theme/css/styles.css -->
+        	<table border="0" style="float: right" class="top_right" cellspacing="0" cellpadding="0">
+        		<tbody>
+      		 	<tr class="top_right_first_row">  <!-- FIRST ROW -->
+      		  		<td colspan="5">
+      		  			<table border="0" cellpadding="0" cellspacing="0" style="float:right"> 
+					        <tr> 
+					          <td style="color: #986087;"> 
+					            <a href="<?php echo $this->getUrl('checkout/cart')?>"> 
+					              <img src="<?php echo $this->getSkinUrl('images/shopping_bag.gif') ?>" alt="SHOPPING BAG" border="0"/> 
+					            </a> 
+					          </td> 
+					          <td style="color: #986087;"> 
+					            <a href="<?php echo $this->getUrl('checkout/cart')?>" class="cartSummaryLink"><?php echo Mage::getSingleton('checkout/cart')->getItemsQty(); ?> Items: <?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol() . round(Mage::getSingleton('checkout/cart')->getQuote()->getGrandTotal(), 2)?></a> 
+					          </td> 
+					        </tr> 
+					      </table> 
+					</td>
+        		</tr>
+        		<tr class="top_right_second_row">  <!-- SECOND ROW -->
+        			<td style="vertical-align: middle">
+       					<a href="<?php echo $this->getBaseURL() . 'customer/account/'?>" title="My Account" style="text-decoration: none;">my account</a>
+       					<?php if(Mage::getSingleton('customer/session')->isLoggedIn()){?><a href="<?php echo Mage::getBaseUrl()."customer/account/logout/"; ?>" id="customer_log_out">(log out)</a><?php } else{} ?>
+        			</td>
+					<td style="padding-left: 6px; padding-right: 9px;"> <!-- DOT -->
+     					<img alt="." src="<?php echo $this->getSkinUrl('images/dot.gif') ?>"/>
+     				</td>
+  					<td style="vertical-align: middle;"> 
+       					<a href="<?php echo $this->getBaseURL() . 'wishlist'?>" title="Wishlist" style="text-decoration: none;">wishlist</a>
+        			</td>
+					<td style="padding-left: 6px; padding-right: 9px;"> <!-- DOT -->
+     					<img alt="." src="<?php echo $this->getSkinUrl('images/dot.gif') ?>"/>
+     				</td>
+					<td valign="middle" style="vertical-align: middle">	        			
+	        			<?php echo $this->getChildHtml('topSearch') ?>
+	        			<!-- The PHP code above creates the HTML for the Search Bar. This is necessary to dynamically fill attributes -->
+	        			<!-- Likely no specific CSS changes needed for search bar anyway, as a higher level CSS rule would stylise these elements -->
+	        		</td>
+        		</tr>
+        		</tbody>
+        	</table>
+		<!-- ***********END TOP RIGHT CORNER************* -->
+		
+
+    </div>
+</div>
+
+<?php echo $this->getChildHtml('topMenu') ?>
+
+
+
+
+<!-- ********** CATEGORY NAVIGATION BLOCK ************* -->
+<?php echo $this->getChildHtml('topContainer'); ?>
+<!-- ********** END CATEGORY NAVIGATION BLOCK ************* -->
+
+
+
+<div class="home_page_header_block">
+<?php echo $this->getChildHtml('home_page_header_block'); ?>
+<?php echo $this->getList(Mage::getSingleton('cms/page')->getIdentifier()) ?>
+</div>

@@ -1,0 +1,17 @@
+<?php $base_url = Mage::getBaseUrl(); ?>
+
+<div id="home_splash">
+	<img src="<?php echo $this->getSkinUrl('images/left_homepage.jpg') ?>" name="" alt="" usemap="#lefthomemap"/>
+	<img src="<?php echo $this->getSkinUrl('images/dlc.jpg') ?>" name="" alt=""/>
+	<img src="<?php echo $this->getSkinUrl('images/right_homepage.jpg') ?>" name="" alt="" usemap="#righthomemap"/>
+	<map name="lefthomemap">
+		<area href="<?php echo $base_url . 'product/new'; ?>" shape="rect" coords="0,1,142,149" style="outline:none;" target="_self" />
+		<area href="<?php echo $base_url . 'editorial.html'; ?>" shape="rect" coords="1,153,143,301" style="outline:none;" target="_self" />
+		<area href="<?php echo $base_url . ''; ?>" shape="rect" coords="1,305,146,454" style="outline:none;" target="_self" />
+	</map>
+	<map name="righthomemap">
+		<area href="<?php echo $base_url . 'product/bestsellers'; ?>" shape="rect" coords="0,1,142,149" style="outline:none;" target="_self" />
+		<area href="<?php echo $base_url . 'product/sale'; ?>" shape="rect" coords="1,153,143,301" style="outline:none;" target="_self" />
+		<area href="<?php echo $base_url . 'product/brand/azuri'; ?>" shape="rect" coords="1,305,146,454" style="outline:none;" target="_self" />
+	</map>
+</div>

@@ -1,0 +1,19 @@
+<?php 
+$distinct = $this->returnColors(); //see app/code/local/Nimli/DisplayBrands/Block/Brands.php for where this code came from
+$url = Mage::app()->getStore()->getBaseUrl();
+?>
+
+<div class="options_list_outer">
+<div class="options_list_inner">
+<span>Color</span>
+<form class="options_list_form">
+<select class="options_list_select" size="5" onchange="window.location = '<?php echo $url ?>' + 'product/color/' + this.options[this.selectedIndex].innerHTML">
+<?php foreach ($distinct as $value): ?>
+<option>
+<?php echo $value; ?>
+</option>
+<?php endforeach ?>
+</select>
+</form>
+</div>
+</div>

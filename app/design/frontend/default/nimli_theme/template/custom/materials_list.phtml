@@ -1,0 +1,43 @@
+<?php 
+$materials_sql = Mage::getModel('catalog/product')->getCollection()->addAttributeToSelect(array('materialandfabric', 'name', 'sku'))->groupByAttribute('materialandfabric')->getColumnValues('materialandfabric');
+
+$materials = array();
+foreach($materials_sql as $material_sql)
+{
+	$split_array = explode('|', $material_sql);
+	foreach($split_array as $sa_key => $sa_value)
+	{
+		if(!in_array(strtolower(trim($sa_value)), $materials))
+		{
+			$materials[] = strtolower(trim($sa_value));			
+		}
+	}
+}
+
+//array cleanup
+sort($materials);
+if($materials[0]==''){unset($materials[0]);} //remove empty option
+unset($materials[array_search('bamboosilk', $materials)]); //remove typo
+unset($materials[array_search('cashmerel', $materials)]); //remove typo
+unset($materials[array_search('soysilk', $materials)]); //remove typo
+
+$materials = array_values($materials); //$materials has the list of options
+
+//$materials has the list of options
+
+$url = Mage::app()->getStore()->getBaseUrl();
+?>
+
+<div class="options_list_outer">
+<div class="options_list_inner">
+<span>Materials</span>
+<form class="options_list_form">
+<select class="options_list_select" size="5" onchange="window.location = '<?php echo $url ?>' + 'product/material/' + this.options[this.selectedIndex].innerHTML">
+<?php foreach ($materials as $value): ?>
+<option>
+<?php echo $value; ?>
+</option>
+<?php endforeach ?>
+</select>
+</form>
+</div>

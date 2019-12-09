@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <modules>
+    <Nimli_Custom>
+      <version>0.1.0</version>
+    </Nimli_Custom>
+  </modules>
+  <global>
+    <helpers>
+      <custom>
+        <class>Nimli_Custom_Helper</class>
+      </custom>
+    </helpers>
+  </global>
+</config>

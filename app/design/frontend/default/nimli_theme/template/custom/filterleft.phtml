@@ -1,0 +1,30 @@
+<?php 
+
+function returnColors()
+{
+$sql = "SELECT DISTINCT value FROM magento_three.catalog_product_entity_varchar WHERE attribute_id = (SELECT attribute_id FROM magento_three.eav_attribute e WHERE attribute_code = 'valuex') AND value IS NOT NULL and value != '' ORDER BY value";
+// Execute the SQL and return the results in to $getData
+$data = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sql);
+$distinct = array();
+foreach($data as $a)
+{
+	$distinct[] = $a['value'];
+}
+return $distinct;
+}
+
+$distinct = returnColors();
+$url = Mage::app()->getStore()->getBaseUrl();
+?>
+
+
+<form id="form_color">
+<span>Color</span>
+<select id="select_color" size="5" onchange="window.location = '<?php echo $url ?>' + 'f/valuex/' + this.options[this.selectedIndex].innerHTML">
+<?php foreach ($distinct as $value): ?>
+<option>
+<?php echo $value; ?>
+</option>
+<?php endforeach ?>
+</select>
+</form>

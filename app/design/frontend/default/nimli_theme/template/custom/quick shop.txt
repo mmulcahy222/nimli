@@ -1,0 +1,160 @@
+<?php $_product = Mage::getModel('catalog/product')->load($this->getProduct()->getId()); ?>
+
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+	var assocIMG =  
+    { // Added
+    <?php
+    if ($_product->getTypeId() == "configurable") {
+        $associated_products = $_product->loadByAttribute('sku', $_product->getSku())->getTypeInstance()->getUsedProducts();
+
+        foreach ($associated_products as $assoc)
+            {$dados[] = $assoc->getId().":'".($assoc->image == "no_selection" || $assoc->image == "" ? $this->helper('catalog/image')->init($_product, 'image', $_product->image)->resize(500,500) : $this->helper('catalog/image')->init($assoc, 'image', $assoc->image)->resize(500,500))."'";
+            }
+    } else {
+        $dados[] =  "''";
+    }
+    echo implode(',', $dados );
+    ?>
+    }   
+    
+    var assocIMG_270 =  
+    { // Added
+    <?php
+    if ($_product->getTypeId() == "configurable") {
+        $associated_products = $_product->loadByAttribute('sku', $_product->getSku())->getTypeInstance()->getUsedProducts();
+
+        foreach ($associated_products as $assoc)
+            {$dados[] = $assoc->getId().":'".($assoc->image == "no_selection" || $assoc->image == "" ? $this->helper('catalog/image')->init($_product, 'image', $_product->image)->resize(200,270) : $this->helper('catalog/image')->init($assoc, 'image', $assoc->image)->resize(200,270))."'";
+            }
+    } else {
+        $dados[] =  "''";
+    }
+    echo implode(',', $dados );
+    ?>
+    }   
+    
+    
+</script>
+
+
+<div class="quick_shop_bar">
+<img class="quick_shop_close" src="<?php echo $this->getSkinUrl('images/yellow_close.png')?>"/>
+</div>
+
+
+
+<div class="custom_quick_shop">
+
+<div class="column_one">
+<a id="quick_shop_image_link" onclick='make_pop_up()'>
+<img id="quick_shop_image" width="200" height="270" src="<?php echo Mage::helper('catalog/image')->init($_product, 'small_image')->resize(200,270);?>" />
+</a>
+</div>
+
+
+
+<form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>  
+<div class="column_two">
+<div class="quick_shop_title">
+<?php echo $_product->getName() . ' '; ?>
+</div>
+<div class="quick_shop_price"><?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol() . round($_product->getPrice(), 0) ?></div>
+
+
+<!-- ******** TABS ********** -->
+<div class="simpleTabs">
+    <ul class="simpleTabsNavigation">
+        <?php if($_product->isConfigurable()): ?><li><a href="#">Options</a></li><?php endif; ?>
+        <li><a href="#">Description</a></li>
+    </ul>
+	<?php if($_product->isConfigurable()): ?>
+	<div class="simpleTabsContent">
+		<div class="quick_shop_options">
+			<?php echo $this->getChildHtml('options_configurable'); ?>  
+		</div>
+	</div>
+	<div class="simpleTabsContent"><div class="quick_shop_description"><?php echo $_product->getDescription() ?></div></div>
+	<?php else: ?>
+    <div class="simpleTabsContent"><div class="quick_shop_description"><?php echo $_product->getDescription() ?></div></div>
+    <div class="simpleTabsContent"><div class="quick_shop_description"><?php echo $_product->getDescription() ?></div></div>
+    <?php endif; ?>
+
+</div>
+<!-- ******** END TABS *************** -->
+
+
+<div class="quick_shop_below_tabs">
+<div class="below_tabs_inner_div">
+<span class="quick_shop_quantity">Quantity:</span> 
+<input type="text" class="input-text qty" title="Qty" value="1" maxlength="12" id="qty" name="qty"/>
+
+<input type="image" style="padding-left: 4px" alt="Add to Shopping Bag" onclick="productAddToCartForm.submit()" value="Submit" src="<?php echo $this->getSkinUrl('images/add_to_shopping_bag.gif') ?>" style="border: 0pt none; padding: 0pt;" title="ADD TO SHOPPING BAG"/>
+</div>
+</div>   
+</div>
+</form>
+
+
+
+<?php 
+$image_files = array('image' => $_product->getImage(), 'small_image' => $_product->getSmallImage(), 'thumbnail' => $_product->getThumbnail());
+foreach($image_files as $key => $element)
+{
+	if(substr($element,0,1) != '/')
+	{
+		unset($image_files[$key]);
+	}
+}
+$all_images = $_product->getMediaGalleryImages();
+$count_unassigned_images = count($all_images) - count($image_files); //count of images not assigned to image or small image or thumbnail
+ ?>
+<div class="quick_shop_bottom">
+<?php if($count_unassigned_images > 0): ?>
+<div class="quick_shop_bottom_inner_div">
+<div class="more_views">More Views:</div>
+<div class="alternate_images">
+<ul>
+<?php foreach ($all_images as $_image): ?>
+<?php if(!in_array($_image->getFile(), $image_files)): ?>
+<li>
+<a onclick='create_link("<?php echo $this->helper('catalog/image')->init($_product, 'small_image', $_image->getFile())->resize(500,500); ?>","<?php echo $this->helper('catalog/image')->init($_product, 'small_image', $_image->getFile())->resize(200,270); ?>")' >
+<img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image', $_image->getFile())->resize(40,40); ?>"/>
+</a>
+</li>
+<?php endif; ?>
+<?php endforeach; ?>
+</ul>
+</div>
+</div>
+<?php endif; ?>
+</div>
+
+</div>
+
+<script type="text/javascript">
+jQuery('.quick_shop_close').click(parent.jQuery.fancybox.close); //close box
+
+var $large_image = "<?php echo Mage::helper('catalog/image')->init($_product, 'small_image')->resize(500,500);?>";
+
+function create_link($large_image_url, $quick_shop_image_url)
+{
+	//change small image
+	var qsi = document.getElementById("quick_shop_image");
+	qsi.src = $quick_shop_image_url;
+	
+	//make pop-up link to pop-up
+	var qsil = document.getElementById("quick_shop_image_link");
+	$large_image = $large_image_url;
+}
+
+
+var popup = '';
+function make_pop_up()
+{
+	//make pop-up image
+	var popup = window.open('','name','height=520,width=520');
+	popup.document.write('<html><head><title>Image</title></head>');
+	popup.document.write('<body><img src=" ' + $large_image + '"/></body></html>');
+}
+</script>

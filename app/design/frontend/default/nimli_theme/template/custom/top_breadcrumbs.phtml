@@ -1,0 +1,35 @@
+<td width="60%">
+	&nbsp; 	
+
+      <img src="<?php echo $this->getSkinUrl('images/sort_by.gif'); ?>" border="0"/>&nbsp;&nbsp;&nbsp;    
+      <a class="black" href="<?php echo $this->getOrderUrl('bestsellers', 'desc');?>" >bestsellers</a>
+      &nbsp;&nbsp;
+	  <img src="<?php echo $this->getSkinUrl('images/dot.gif'); ?>" border="0"/>
+	  &nbsp;&nbsp;          
+	  <?php $direction = $this->getRequest()->getParam('dir'); ?>
+	  <?php if($direction == 'asc'): ?> 
+      <a class="black " href="<?php echo $this->getOrderUrl('price', 'desc'); ?>">price</a>   
+ 	  <?php else: ?>
+	  <a class="black " href="<?php echo $this->getOrderUrl('price', 'asc'); ?>">price</a> 
+	  <?php endif; ?>
+	  <?php if($this->getRequest()->getParam('order') == 'price'): ?> 
+	  <?php if($direction == 'asc'): ?> 
+	  <img src="<?php echo $this->getSkinUrl('images/up.jpg'); ?>" style="height: 11px; width: 8px; padding: 0px 5px"/> 
+	  <?php elseif($direction == 'desc'): ?>
+	  <img src="<?php echo $this->getSkinUrl('images/down.jpg'); ?>" style="height: 11px; width: 8px; padding: 0px 5px"/> 
+	  <?php endif; ?>
+	  <?php endif; ?>
+	  
+</td>
+
+<td width="40%" align="right">
+	&nbsp; 	
+	  <?php  
+		$limit = ($this->getRequest()->getParam('limit')) ? $this->getRequest()->getParam('limit') : $this->getDefaultPerPageValue();
+      ?>
+      <img src="<?php echo $this->getSkinUrl('images/view_per_page.gif'); ?>" alt="VIEW PER PAGE" border="0"/>&nbsp
+      <a href="<?php echo $this->getLimitUrl(24); ?>" <?php if($limit == 24): ?>class="current_page_size"<?php endif;?> > 24 items </a>&nbsp;
+      <img src="<?php echo $this->getSkinUrl('images/dot.gif'); ?>" alt="." border="0"/>&nbsp;
+      <a href="<?php echo $this->getLimitUrl(96); ?>" <?php if($limit == 96): ?>class="current_page_size"<?php endif;?>> 96 items </a>
+
+</td>

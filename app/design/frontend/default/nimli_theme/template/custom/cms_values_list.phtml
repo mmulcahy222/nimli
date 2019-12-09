@@ -1,0 +1,18 @@
+<?php
+
+define("ATTRIBUTE", Mage::getSingleton('cms/page')->getIdentifier());
+define("BASE_URL", Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
+
+$values = $this->getList(ATTRIBUTE);
+
+function getUrl($value)
+{
+	echo BASE_URL . 'product/' . ATTRIBUTE . '/' . $value; 
+}
+
+?>
+<div class="attribute_value_list">
+<?php foreach($values as $value): ?>
+<div><a href="<?php echo getUrl($value); ?>"><?php echo $value ?></a></div>
+<?php endforeach ?>
+</div>

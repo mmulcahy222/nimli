@@ -1,0 +1,68 @@
+<?php 
+
+function getSortedChildrenCategories($category)
+{
+        $collection = $category->getCollection();
+        /* @var $collection Mage_Catalog_Model_Resource_Eav_Mysql4_Category_Collection */
+        $collection->addAttributeToSelect('url_key')
+            ->addAttributeToSelect('name')
+            ->addAttributeToSelect('all_children')
+            ->addAttributeToSelect('is_anchor')
+            ->addAttributeToFilter('is_active', 1)
+            ->addIdFilter($category->getChildren())
+            ->setOrder('name', 'ASC')
+            ->load();
+        return $collection;
+}
+
+function getAboveCategories($value)
+{
+	$model = Mage::getModel('catalog/category')->load($value);
+	$explode = explode('/', $model->getPath());
+	end($explode);
+	prev($explode);
+	$one_level_up = current($explode);
+	return getSortedChildrenCategories(Mage::getModel('catalog/category')->load($one_level_up));
+	
+}
+
+function get_third_level_category_id($current_product = NULL)
+{ 
+	$category_list = $current_product->getCategoryCollection();
+	$category_array = array();
+	foreach($category_list as $category)
+	{
+		if($category->isInRootCategoryList())
+		{
+		$category_array[$category->getLevel()] = $category->getId();
+		}
+	}		 
+	return $category_array[3]; //level three
+}
+
+$current_category = Mage::getModel('catalog/category')->load(get_third_level_category_id($this->getProduct())); 
+?>
+
+
+<?php $_categories = ($current_category->hasChildren()) ? getSortedChildrenCategories($current_category) : getaboveCategories($current_category->getId()); ?>
+<?php $_count = is_array($_categories) ? count($_categories) : $_categories->count(); ?>
+<?php if($_count): ?>
+<div class="block block-layered-nav">
+    <div class="block-content">
+        <dl id="narrow-by-list2">
+            <dd>
+                <ol>
+                <?php foreach ($_categories as $_category): ?>
+                    <?php if($_category->getIsActive()): ?>
+                    <li>
+                        <a href="<?php echo $_category->getUrl() ?>"><?php echo $this->htmlEscape($_category->getName()) ?></a> 
+                    </li>
+                    <?php endif; ?>
+                <?php endforeach ?>
+                </ol>
+            </dd>
+        </dl>
+    </div>
+</div>
+<?php endif; ?>
+<div style="padding: 5px 0px; margin-top: 5px; border-top: 1px solid #DDD"></div>

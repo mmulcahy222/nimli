@@ -1,0 +1,266 @@
+<?php
+
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2009 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+?>
+<div class="footer-container">
+    <div class="footer">
+      
+	<!-- START OF COPY AND PASTE OF FOOTER -->
+	    
+   	<td class="nimli_footer" valign="bottom" colspan="2" style="padding-top: 10px;">
+    
+    
+
+                       
+            <table border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td valign="middle">
+                  <a href="" class="bottomNavigationHighLightText">customer&nbsp;service</a>
+                </td>
+                <td width="16" align="center" valign="middle">
+                  <img src="http://www.nimli.com/images/footer01_20.gif" alt="." border="0">
+                </td>
+                <td valign="middle">
+                  <a href="" class="bottomNavigationHighLightText">email&nbsp;us</a>
+                </td>
+                <td width="16" align="center" valign="middle">
+                  <img src="http://www.nimli.com/images/footer01_20.gif" alt="." border="0">
+                </td>
+                <td valign="middle">
+                  <a href="" class="bottomNavigationHighLightText">track&nbsp;order</a>
+                </td>
+                <td width="16" align="center" valign="middle">
+                  <img src="http://www.nimli.com/images/footer01_20.gif" alt="." border="0">
+                </td>
+                <td valign="middle">                
+                  <a href="" class="bottomNavigationHighLightText">about&nbsp;NIMLI</a>
+                </td>
+                <td width="16" align="center" valign="middle">
+                  <img src="http://www.nimli.com/images/footer01_20.gif" alt="." border="0">
+                </td>
+                <td valign="middle">
+                  <a href="content.jsp?pageCode=news" class="bottomNavigationHighLightText">press</a>
+                </td>
+                <td width="16" align="center" valign="middle"> 
+                  <img src="http://www.nimli.com/images/footer01_20.gif" alt="." border="0">
+                </td>
+                <td valign="middle">
+                  <a href="http://www.nimlitalk.com" target="_blank" class="bottomNavigationHighLightText">blog</a>
+                </td>
+                <td width="16" align="center" valign="middle">
+                  <img src="http://www.nimli.com/images/footer01_20.gif" alt="." border="0">
+                </td>
+                <td valign="middle" class="bottomNavigationHighLightText">
+                  sign&nbsp;up&nbsp;for&nbsp;email&nbsp;updates
+                </td>
+                <td valign="middle" style="padding: 0 5px;">                
+                  <input type="text" size="30" name="ea" id="footerEmail" style="font-size: 8pt; color: #606060; padding: 0 2px;">                                    
+                </td>
+                <td valign="middle">
+                  <input type="image" src="http://www.nimli.com/images/submit.gif" alt="SUBMIT" style="border: 0px;">
+                </td>
+              </tr>
+            </table>
+            </form>
+            
+<!-- END ROW 1 -->
+
+          </td>
+        </tr>
+        <tr>
+          <td width="100%" align="left">
+
+<!-- ROW 2 -->
+                
+            <table border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td valign="middle">
+                  <a href="" class="bottomNavigationHighLightText">shipping</a>
+                </td>
+                <td width="16" align="center" valign="middle">
+                  <img src="http://www.nimli.com/images/footer01_20.gif" alt="." border="0">
+                </td>   
+                <td valign="middle">
+                  <a href="" class="bottomNavigationHighLightText">returns</a>
+                </td> 
+                <td width="16" align="center" valign="middle">
+                  <img src="http://www.nimli.com/images/footer01_20.gif" alt="." border="0">
+                </td>     
+                <td valign="middle">
+                  <a href="" class="bottomNavigationHighLightText">gift&nbsp;center</a>
+                </td> 
+                <td width="16" align="center" valign="middle">
+                  <img src="http://www.nimli.com/images/footer01_20.gif" alt="." border="0">
+                </td>
+                <td valign="middle">
+                  <a href="" class="bottomNavigationHighLightText">affiliates</a>
+                </td> 
+                <td width="16" align="center" valign="middle">
+                  <img src="http://www.nimli.com/images/footer01_20.gif" alt="." border="0">
+                </td>
+                <td valign="middle">
+                  <a href="" class="bottomNavigationHighLightText">careers</a>
+                </td> 
+                <td width="16" align="center" valign="middle">
+                  <img src="http://www.nimli.com/images/footer01_20.gif" alt="." border="0">
+                </td> 
+                <td valign="middle">
+                  <a href="" class="bottomNavigationHighLightText">corporate</a>
+                </td> 
+                <td width="16" align="center" valign="middle">
+                  <img src="http://www.nimli.com/images/footer01_20.gif" alt="." border="0">
+                </td>                                                      
+                <td valign="middle">
+                  <a href="" class="bottomNavigationHighLightText">privacy&nbsp;&amp;&nbsp;security</a>
+                </td>                
+                <td width="16" align="center" valign="middle">
+                  &nbsp;
+                </td>     
+                <td valign="middle">
+                  &nbsp;
+                </td>   
+                <!--
+                <td width="20" align="center">&nbsp;
+                </td>
+                -->                          
+                <td align="right" style="padding-left: 224px;">       
+                  <img src="http://www.nimli.com/images/footer02_15.gif" alt="Nimli" border="0"> 
+                </td>                
+              </tr>              
+            </table> 
+        
+<!-- END ROW 2 -->
+
+          </td> 
+        </tr> 
+        <tr> 
+          <td width="100%" align="left">
+        	
+<!-- ROW 3 -->
+        	
+            <table border="0" cellspacing="0" cellpadding="0"> 
+              <tr>
+                <td valign="top" align="left"><b>currency:</b></td> 
+                <td width="5"><img src="http://www.nimli.com/images/spacer.gif"></td> 
+                <td valign="top" align="left"> 
+                
+                
+ 
+						<a href="http://www.nimli.com/index.jsp?selectedCurrency=USD" rel="nofollow"> 
+						  <img src="http://www.nimli.com/images/countries/us11.gif" alt="" border="0" class="flagBorder selected" /> 
+						</a> 
+						<a href="http://www.nimli.com/index.jsp?selectedCurrency=CAD" rel="nofollow"> 
+						  <img src="http://www.nimli.com/images/countries/can11.gif" alt="" border="0" class="flagBorder" /> 
+						</a> 
+						<a href="http://www.nimli.com/index.jsp?selectedCurrency=EUR" rel="nofollow"> 
+						  <img src="http://www.nimli.com/images/countries/eu11.gif" alt="" border="0" class="flagBorder" /> 
+						</a> 
+						<a href="http://www.nimli.com/index.jsp?selectedCurrency=GBP" rel="nofollow"> 
+						  <img src="http://www.nimli.com/images/countries/uk11.gif" alt="" border="0" class="flagBorder" /> 
+						</a> 
+						<a href="http://www.nimli.com/index.jsp?selectedCurrency=AUD" rel="nofollow"> 
+						  <img src="http://www.nimli.com/images/countries/au11.gif" alt="" border="0" class="flagBorder" /> 
+						</a> 
+						<a href="http://www.nimli.com/index.jsp?selectedCurrency=JPY" rel="nofollow"> 
+						  <img src="http://www.nimli.com/images/countries/jap11.gif" alt="" border="0" class="flagBorder" /> 
+						</a> 
+					 
+ 
+            	</td> 
+            	<td width="16" align="center" valign="middle"> 
+                  <img src="http://www.nimli.com/images/footer01_20.gif" alt="." border="0"> 
+                </td> 
+ 
+                <td valign="top" align="left"><b>language:</b></td> 
+                <td width="5"><img src="http://www.nimli.com/images/spacer.gif"></td> 
+                
+ 
+ 
+ 
+	<script type="text/javascript"> 
+ 
+	divHere=false;
+ 
+	 function toggleDiv(comegoDiv){
+
+		var divObject = document.getElementById(comegoDiv);
+
+		if (divHere == false) {
+			divObject.style.display = 'block';
+			divHere=true;
+		}
+		else {
+			divObject.style.display = 'none';
+			divHere=false;
+		}
+	 }
+
+	 </script> 
+
+	  <td valign="top" align="left"> 
+
+	   <a href="javascript:toggleDiv('googleTranslate');" class="bottomNavigationHighLightText">English</a>  
+
+	  </td> 
+              </tr> 
+              <tr> 
+              	<td></td> 
+ 
+              	<td></td> 
+              	<td></td> 
+              	<td></td> 
+              	<td></td> 
+              	<td></td>             
+              	<td valign="top" align="left"><div id="googleTranslate" style="display: none;"> 
+ 
+	 <table border="0" cellpadding="0" cellspacing="0"> 
+	  <tr> 
+ 		 <td valign="top" align="left"> 
+        
+		 </td> 
+	   </tr> 
+	 </table> 
+ 
+ 
+ 	</div></td> 
+ 
+ 
+ 			  </tr> 
+            </table></td> 
+        </tr> 
+            
+<!-- END ROW 3 -->
+            
+      </table> 
+      
+<!-- END THREE BOTTOM ROWS -->
+      
+
+<!-- END OF COPY AND PASTING OF FOOTER -->
+        
+    </div>
+</div>

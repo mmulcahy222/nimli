@@ -1,0 +1,146 @@
+
+<?php
+$_product    = $this->getProduct();
+$_attributes = Mage::helper('core')->decorateArray($this->getAllowAttributes());
+
+?>
+<?php if ($_product->isSaleable() && count($_attributes)):?>
+    <dl>
+<span>Select Color: <span id="current_color" style="font-weight: 800; color: red">-----</span> </span>
+
+    <?php foreach($_attributes as $_attribute): ?>
+<div style="display: none">
+        <dt><label><?php echo $_attribute->getLabel() ?><span class="required">&nbsp;*</span></label></dt>
+        <dd<?php if ($_attribute->decoratedIsLast){?> class="last"<?php }?>>
+          <select name="super_attribute[<?php echo $_attribute->getAttributeId() ?>]" id="attribute<?php echo $_attribute->getAttributeId() ?>" class="required-entry super-attribute-select">
+            <option><?php echo $this->__('Choose an Option...') ?></option>
+          </select>
+        </dd>
+</div>
+    <?php 
+        $_productAttribute = $_attribute->getProductAttribute();
+        $_option_vals = array();
+       
+
+        //
+        // The following is an array of attribute codes. 
+        // List here all attributes that will potentially
+        // have associated color codes
+        //
+        $color_attributes = array('color_item');
+
+        if ( in_array($_productAttribute->getAttributeCode(), $color_attributes) ) {
+    						
+                        echo '<div><ul class="colorlist" style="padding: 10px">';
+
+                        $_colors = array();
+
+
+                        //
+                        // Pull in all potential options for this attribute
+                        //
+                        $_collection = Mage::getResourceModel('eav/entity_attribute_option_collection')
+                                              ->setStoreFilter(0)
+                                                  ->setAttributeFilter($_productAttribute->getId())
+                                                    ->load();
+                
+                        foreach( $_collection->toOptionArray() as $_cur_option ) {
+                               $_option_vals[$_cur_option['value']] = array('id' => $_cur_option['value'], 'internal_label' => $_cur_option['label']);
+                           }
+
+					
+
+
+                        //
+                        // Get associated products
+                        //
+                        $temp =  new Mage_Catalog_Block_Product_View_Type_Configurable();
+                        $_assProducts = Mage::helper('core')->decorateArray($temp->getAllowProducts());
+                        
+                        foreach($_assProducts as $_assProduct){
+
+                                            
+                                $_option_id = $_assProduct->getData($_productAttribute->getAttributeCode());
+                				
+								//
+                                // Keep track of the admisn/backend label for this option id
+                                //
+                                if ( isset($_option_vals[$_option_id]['internal_label']) ) {
+                                    $_option_vals[$_option_id]['label'] = $_assProduct->getAttributeText($_productAttribute->getAttributeCode());
+                                    $_option_vals[$_option_id]['path'] = $_assProduct->getThumbnailUrl();
+                                    array_push($_colors, $_option_id);
+                                }
+
+                            
+                        }
+						file_put_contents("C:/text/goon.txt", var_export($_option_vals, 1));
+                        $_color_swatch = array_unique($_colors);
+                        
+                        foreach($_color_swatch as $_inner_option_id){
+
+                                 preg_match_all('/((#?[A-Za-z0-9]+))/', $_option_vals[$_inner_option_id]['internal_label'], $matches);
+                                $thumbnail_path = $_option_vals[$_inner_option_id]['path'];
+                                if ( count($matches[0]) > 0 ) {
+        
+                                    //
+                                    // Found a color definition in the admin label
+                                    //
+                                    $color_value = $matches[1][count($matches[0])-1];
+									
+					
+                                    echo '<li><div onmousedown="set_attribute_selected_value('.$_attribute->getAttributeId().', '.$_inner_option_id.');" style="cursor:pointer; float:left; margin-left: 8px; height: 32px; width: 32px;" title="' . $_option_vals[$_inner_option_id]['label'] . '"><img src="' . $thumbnail_path .  '"/ width="32" height="32"></div></li>'; 
+                              
+                                }
+
+                        }
+
+                        echo '</ul></div>';            
+                        
+        }
+    
+        endforeach; 
+    ?>
+    </dl>
+    
+   <script type="text/javascript">
+       
+   			 var spConfig = new Product.Config(<?php echo $this->getJsonConfig() ?>);
+   		
+    	jQuery('.colorlist li div').hover(
+			function(){
+				$(this).css(
+				{'border-left': '1px black'
+				,'border-top': '1px #000'
+				,'border-right': '1px solid black'
+				,'border-bottom': '1px solid black'
+				});
+			}
+			,
+			function(){
+				$(this).css()
+			}
+			);
+			
+    	
+		
+        function set_attribute_selected_value( attribute_id, val ) {
+            
+            dropdown = document.getElementById('attribute' + attribute_id);
+		
+	   document.getElementById('current_color').innerHTML = attribute_id;
+		
+
+            for ( var i = 0; i < dropdown.options.length; i++ ) {
+                if ( dropdown.options[i].value == val ) {
+                    dropdown.selectedIndex = i;
+		    document.getElementById('current_color').innerHTML = dropdown.options[i].text.toUpperCase();
+                    break;
+                }
+            }
+
+            spConfig.configureElement($('attribute' + attribute_id));
+            var selectedAssocProducts = {}; // Added
+            
+        }z
+    </script>
+<?php endif;?>

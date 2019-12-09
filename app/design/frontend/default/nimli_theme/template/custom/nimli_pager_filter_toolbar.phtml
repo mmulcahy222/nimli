@@ -1,0 +1,5 @@
+<?php  
+$product_collection = $this->getLayout()->getBlock('filter_result')->getLoadedProductCollection();
+$this->setCollection($product_collection);
+echo $this->getPagerHtml();
+?>

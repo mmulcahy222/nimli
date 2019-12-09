@@ -1,0 +1,54 @@
+<?php
+
+$identifier = Mage::getSingleton('cms/page')->getIdentifier();
+define("BASE_URL", Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
+
+function getUrl_BN($filter_route, $attribute, $value)
+{
+	return BASE_URL . $filter_route . '/' . $attribute . '/' . $value; 
+}
+
+$category = Mage::getModel('catalog/category')->loadByAttribute('url_key', $identifier);
+
+if($category) $category_id = $category->getId();
+
+$iterated_links = array();
+$iterated_links[10] = array('name' => 'Best Sellers', 'link' => getUrl_BN('product', 'bestsellers', $category_id));
+$iterated_links[50] = array('name' => 'What\'s New', 'link' => getUrl_BN('product', 'new', $category_id));
+
+
+
+//GENERATE LIST BASED ON THE CMS PAGE
+switch ($identifier) {
+    case "women":
+        $iterated_links[20] = array('name' => 'Eco Weddings', 'link' => getUrl_BN('product', 'eco', ''));
+        $iterated_links[30] = array('name' => 'Editorial Picks', 'link' => getUrl_BN('product', 'editorial', ''));
+        $iterated_links[40] = array('name' => 'Shop Local', 'link' => getUrl_BN('product', 'shop', ''));
+        break;
+    case "gifts":
+        unset($iterated_links[10]);
+        break;
+    case "sale":
+        unset($iterated_links[10]);
+        break;
+    case "designer":
+        unset($iterated_links[10]);
+        unset($iterated_links[50]);
+        break;  
+    case "brand":
+        unset($iterated_links[10]);
+        unset($iterated_links[50]);
+        break;   
+}
+
+
+
+ksort($iterated_links);
+?>
+
+<div class="left_column_content">
+<?php foreach($iterated_links as $iterated_link): ?>
+<div><a href="<?php echo $iterated_link['link']; ?>"><?php echo $iterated_link['name']; ?></a></div>
+<?php endforeach; ?>
+
+</div>

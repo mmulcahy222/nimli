@@ -1,0 +1,455 @@
+<?php
+	$ts = microtime();
+    $_helper = $this->helper('catalog/output');
+    $_product = $this->getProduct();
+    
+    function getTime($start)
+    {
+    	echo microtime() - $start;
+    }
+
+?>
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+var assocIMG =  
+    <?php
+    
+
+    if ($_product->getTypeId() == "configurable") {
+        echo "{";
+        $associated_products = $_product->loadByAttribute('sku', $_product->getSku())->getTypeInstance()->getUsedProducts();
+        foreach ($associated_products as $assoc)
+            $dados[] = $assoc->getId().":'".($assoc->image == "no_selection" || $assoc->image == "" ? $this->helper('catalog/image')->init($_product, 'image', $_product->image) : $this->helper('catalog/image')->init($assoc, 'image', $assoc->image))."'";
+    } else {
+        $dados[] =  "''";
+    }
+    echo implode(',', $dados );     
+    if ($_product->getTypeId() == "configurable") {
+        echo "}";
+    }
+    ?>
+
+
+
+</script>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="product-view">
+
+    <div class="notrelated" style="float: left">
+    <div class="product-essential">
+
+    <form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+        <div class="no-display">
+            <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+            <input type="hidden" name="related_product" id="related-products-field" value="" />
+        </div>
+
+        <div class="product-shop">
+        	<div class="product-shop-inner">
+            <div class="product-name">
+                <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+            </div>
+
+            <?php echo $this->getChildHtml('alert_urls') ?>
+            <?php echo $this->getChildHtml('product_type_data') ?>
+            <br />
+            <?php echo $this->getTierPriceHtml() ?>
+            
+            
+      		<?php //echo $this->getChildHtml('product_additional_data') ?>
+			
+            
+            <!-- ******** TABS ********** -->
+            <div class="simpleTabs">
+		        <ul class="simpleTabsNavigation">
+		            <li><a href="#">Description</a></li>
+		            <li><a href="#">Reviews</a></li>
+		        </ul>
+		        <div class="simpleTabsContent"><?php echo $this->getChildHtml('description') ?></div>
+		        <div class="simpleTabsContent"><div class="reviews"><?php echo $this->getReviewsSummaryHtml($_product, false, true)?><?php echo $this->getChildHtml('reviews') ?></div></div>
+		    </div>
+            <!-- ******** END TABS *************** -->
+            
+			<?php //echo $this->getChildHtml('description') ?>
+			
+            <?php if ($_product->getShortDescription()):?>
+                <!--
+				<div class="short-description">
+                    <h2><?php echo $this->__('Quick Overview') ?></h2>
+                    <div class="std"><?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?></div>
+                    
+                </div>
+                -->
+            <?php endif;?>
+
+			<?php echo $this->getChildHtml('other'); //getTime($ts);?>
+			
+			<div class="product_options_outer_div" >
+            <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+                <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+            <?php endif;?>
+            </div>
+            
+            <!-- ************** TABLE AFTER COLOR OPTIONS (UPPER LEFT) ************* -->
+            <div class="product_table_upper_left_cart_outer_div">
+            	<table>
+					<tr>
+					  <td style="padding: 15px 0px 5px">
+					  	<label for="qty">Quantity:</label>
+					  	<input type="text" class="input-text qty" title="Qty" value="1" maxlength="12" id="qty" name="qty"/>
+					  </td>
+					</tr>
+					<tr>
+					  <td>	
+					  	<?php //var_export(Mage::getSingleton('customer/session')->getCustomer()->getPrimaryShippingAddress()->getCountry()); ?>	
+					  </td>
+					</tr>
+				</table>				
+			</div>
+			<!-- ************** END TABLE AFTER COLOR OPTIONS (UPPER LEFT)************* -->
+			
+			<!-- ************** TABLE (BOTTOM RIGHT (Add To Shopping Bag)) ************* -->
+			<div class="product_table_bottom_right_cart_outer_div">
+				<table class="product_table_bottom_right_cart" cellspacing="0" cellpadding="0" border="0">
+                              <tbody><tr>
+                                <td width="152" height="10"><img border="0" alt="" src="<?php echo $this->getSkinUrl('images/spacer.gif') ?>"></td>
+                              </tr>
+                              <tr> 
+                                <td width="152" height="18" align="left">                                                      
+                                  <input type="image" alt="Add to Shopping Bag" onclick="productAddToCartForm.submit()" value="Submit" src="<?php echo $this->getSkinUrl('images/add_to_shopping_bag.gif') ?>" style="border: 0pt none; padding: 0pt;" title="ADD TO SHOPPING BAG"/>                        
+                                </td>
+                              </tr>                              
+                              <tr>
+                                <td width="152" height="11"><img border="0" alt="" src="<?php echo $this->getSkinUrl('images/spacer.gif') ?>"/></td>
+                              </tr>
+                              <tr>
+                                <td width="152" height="14" align="left">
+								<!-- AddThis Button BEGIN -->
+								<div class="addthis_toolbox addthis_default_style ">
+								<a class="addthis_button_preferred_1"></a>
+								<a class="addthis_button_preferred_2"></a>
+								<a class="addthis_button_preferred_3"></a>
+								<a class="addthis_button_preferred_4"></a>
+								<a class="addthis_button_compact"></a>
+								<a class="addthis_counter addthis_bubble_style"></a>
+								</div>
+								<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4db8f74d0089ec55"></script>
+								<!-- AddThis Button END -->
+								</td>
+                              </tr>
+                              <tr>
+                                <td width="152" height="11"><img border="0" alt="" src="<?php echo $this->getSkinUrl('images/spacer.gif') ?>"/></td>
+                              </tr>
+                              <tr>
+                                <td width="152" height="14" align="left"><a href="<?php echo $this->helper('catalog/product')->getEmailToFriendUrl($_product) ?>"><img border="0" alt="email to a friend" src="<?php echo $this->getSkinUrl('images/e-mail.gif') ?>"/></a></td>
+                              </tr>
+                              <tr>
+                                <td width="152" height="11"><img border="0" alt="" src="<?php echo $this->getSkinUrl('images/spacer.gif') ?>"/></td>
+                              </tr>
+                              <tr>
+                                <td width="152" height="14" align="left">
+                                  <a href="<?php echo $this->helper('catalog/product_compare')->getAddToWishlistUrl($_product)?>"><img border="0" alt="add to wishlist" src="<?php echo $this->getSkinUrl('images/add_to_wishlist.gif') ?>"/></a>
+                                </td>                                
+                              </tr>  
+                              <tr>
+                                <td width="152" height="7"><img border="0" alt="" src="<?php echo $this->getSkinUrl('images/spacer.gif') ?>"/></td>
+                              </tr>                      
+                              <tr>
+                                <td width="152" height="7"><img border="0" alt="" src="<?php echo $this->getSkinUrl('images/spacer.gif') ?>"/></td>
+                              </tr>
+                            </tbody></table>
+			</div>
+			<!-- ************** END TABLE (BOTTOM RIGHT (Add To Shopping Bag)) ****************** -->
+						
+			<!-- ************** FEATURES ******************** -->
+			<?php if(strtolower($_product->getbrand()) == 'azuri'): 
+			
+			/// IF YOU REMOVE THE BRAND ATTRIBUTE AND WORK WITH VENDORS
+			/// WITH A VENDOR PORTAL OR UDROPSHIP, THEN CHANGE IF STATEMENT ABOVE
+			/// TO REFLECT IF THE PRODUCT'S VENDOR IS AZURI
+			 
+			?>
+			<div class="features_outer">
+				<div class="features_inner">
+					<table>
+					<tr>
+					  <td id="features_header">		
+		  					FEATURES
+					  </td>
+					</tr>
+					<?php $features = explode('|', $_product->getfeatures()); ?>	
+					<?php foreach($features as $feature): ?>
+					<tr>
+					  <td>		
+		  					<?php echo '- ' . $feature ?>
+					  </td>
+					</tr>
+					<?php endforeach; ?>
+					</table>
+				</div>
+			</div>
+			<?php endif; ?>
+			<!-- ************** END FEATURES ******************** -->
+			
+			
+			
+			<!-- ************ RECENTLY VIEWED PRODUCTS ****************** -->
+			<?php $recently_viewed_products = Mage::getBlockSingleton('reports/product_viewed')->_getRecentProductsCollection(); ?>
+			<?php if(count($recently_viewed_products) != 0):?> 
+			<div class="recently_viewed top_border">
+			<div class="recently_viewed_title">RECENTLY VIEWED</div>
+			<div class="recently_viewed_pictures">
+		 	<?php foreach($recently_viewed_products as $a): ?>
+		 	<a href="<?php echo $this->getProductUrl($a);?>">
+		 	<img src="<?php echo Mage::helper('catalog/image')->init($a, 'small_image')->resize(75,97);?>"/>
+		 	</a>
+		 	<?php $count++; if($count == 4){break; } //ONLY 4 PRODUCTS ?>
+			<?php endforeach; ?>
+			</div>
+			</div>
+			<?php endif; ?>
+			<!-- ************* END RECENTLY VIEWED PRODUCTS ************************ -->
+			
+			
+			<!-- ************** VENDOR INFORMATION ******************** -->
+			<?php $attribute_set_name = Mage::getModel('eav/entity_attribute_set')->load($_product->getAttributeSetId())->getAttributeSetName(); ?>
+			
+			 <div class="vendor top_border">
+			  <br />
+	          <b >Shipping:</b>
+	          Item usually ships within 5 business days.      
+	          <br/>
+	          <b>Returns &amp; Exchanges:</b>&nbsp;This item can be exchanged or returned within 14 days of delivery.<br/><span style="font-size: 7px; color: rgb(255, 255, 255); line-height: 100%;">filler</span><br/>
+	          <?php if($attribute_set_name == 'nimli_object'): ?>	
+				<div style="text-align: center;"><img src="http://www.nimli.com/images/brands/vers.gif" alt=""/></div>
+				Vers was founded with a mission to design better looking, better sounding, environmentally thoughtful sound systems; our belief in "sound sound" is the driving passion behind everything we do. Real, beautiful, hand-crafted wood cabinets are the central feature in all Vers systems. The 9mm thick walls of a Vers cabinet significantly reduce the resonance which "colors" most speakers' sound. The natural acoustic properties of wood bring a warm, natural quality to our sound that simply can't be achieved with plastic. Our wood is selected from plantation sources, our packaging is made from 100% post-consumer material, and our components are energy-efficient and free of toxic materials. We are an Energy Star Partner and an E-Steward Enterprise, and have been carbon-neutral since day one. Big sound, small footprint — it's what Vers is all about.<br><span style="font-size: 7px; color: rgb(255, 255, 255); line-height: 100%;">filler</span> 
+			 <?php endif; ?>
+			 
+			 </div>
+			<!-- ************** END VENDOR INFORMATION ******************** -->
+		</div>
+        </div>
+	
+        <div class="product-img-box">
+            <?php echo $this->getChildHtml('media') ?>
+        </div>
+
+        <div class="clearer"></div>
+        <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+            <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+        <?php endif;?>
+		
+    </form>
+    
+    <script type="text/javascript">
+    //<![CDATA[
+            var productAddToCartForm = new VarienForm('product_addtocart_form');
+            productAddToCartForm.submit = function(){
+                    if (this.validator.validate()) {
+                            this.form.submit();
+                    }
+            }.bind(productAddToCartForm);
+    //]]>
+    </script>
+    </div>
+
+    <div class="product-collateral top_border">
+    
+		
+    	<div class="best_sellers_bar">
+		<div class="similar_best_sellers" style="font-family: Trebuchet MS, sans-serif; font-weight: bold; padding: 18px 0pt 14px 25px; font-size: 13px; letter-spacing:1px;">SIMILAR  BESTSELLERS</div>
+    	<!-- ****************** BEST SELLERS BAR **************** -->
+			<img class="bs_prev" src="<?php echo $this->getSkinUrl('images/m_left.gif')?>"/>
+			<div class="bestSellers">		
+				    <ul class="movableList">
+				
+						<?php $bs_collection = getBestSellersCollection($_product);	?>
+						<?php foreach($bs_collection as $bs_product): ?>
+					        <li>
+								<div class="ordered_list_div">
+									<div class="ordered_list_picture_outer">
+										<div class="ordered_list_picture_inner">
+											<a href="<?php echo $bs_product->getProductUrl() ?>">
+												<img class="ordered_list_picture" src="<?php echo $bs_product->getSmallImageUrl(); ?>"/>
+											</a>
+										</div>
+									</div>
+									<div class="ordered_list_text_outer">
+										<div class="ordered_list_text_inner">
+											<a href="<?php echo $bs_product->getProductUrl() ?>">
+										 		<?php echo $bs_product->getName(); ?>
+										 	</a>
+											<br/>
+											<span class="price_text"> <?php echo "$" . round($bs_product->getPrice(), 0); ?> </span>
+										</div>
+									</div>					
+								</div>
+							</li>
+						<?php endforeach; ?>
+						<li><div class="ordered_list_div"></li>
+						<li><div class="ordered_list_div"></li>
+						<li><div class="ordered_list_div"></li>
+						<li><div class="ordered_list_div"></li>
+				    </ul>
+			</div>
+			<img class="bs_next" src="<?php echo $this->getSkinUrl('images/m_right.gif')?>"/>
+		</div>
+		<!-- **************************** END BEST SELLERS BAR ******************** -->
+		
+		
+		
+        <?php echo $this->getChildHtml('best_sellers') ?>
+        <?php //echo $this->getChildHtml('additional') ?>
+		<?php //echo $this->getChildHtml('upsell_products') ?>
+		
+		
+		
+    </div>
+   	
+   	<!-- ************* ADDITIONAL PRODUCT INFORMATION -->
+	<div class="additional_data top_border">
+		<div class="additional_product_info" style="font-family: Trebuchet MS, sans-serif; font-weight: bold; padding: 18px 0pt 14px 25px; font-size: 13px; letter-spacing:1px;">ADDITIONAL PRODUCT INFORMATION</div>
+		<?php echo $this->getChildHtml('product_additional_data') ?>
+	</div>
+	<!-- ************* END ADDITIONAL PRODUCT INFORMATION -->
+	
+	
+    <!-- ************ NEED HELP ***************** -->
+    <div class="need_help top_border">
+    <div class="need_help_right">   
+          <b>Need Help? 
+          <a href="#">Email us</a>, 
+          </b> or call 888.847.9997.<br/> Mon-Fri 11am-6pm EST. 
+    </div>
+    </div>
+	<!-- ************* END NEED HELP **************** -->
+    
+	</div>
+    <div class="related" style="height: 1000px; float: left;">
+    
+    	<!-- RELATED PRODUCTS BAR -->
+	    <img class="rp_prev" src="<?php echo $this->getSkinUrl('images/m_up.gif')?>"/>
+		<div class="relatedProducts">		
+			    <ul class="movableList">
+					<?php $r_collection = getRelatedProductsCollection($_product);?>
+					<?php foreach($r_collection as $r_product): ?>
+				        <li>
+							<div class="ordered_list_div">
+								<div class="ordered_list_picture_outer">
+									<div class="ordered_list_picture_inner">
+										<a href="<?php echo $r_product->getProductUrl() ?>">
+											<img class="ordered_list_picture" src="<?php echo $r_product->getSmallImageUrl(); ?>"/>
+										</a>
+									</div>
+								</div>
+								<div class="ordered_list_text_outer">
+									<div class="ordered_list_text_inner">
+										<a href="<?php echo $r_product->getProductUrl() ?>">
+									 		<?php echo $r_product->getName(); ?>
+									 	</a>
+										<br/>
+										<span class="price_text"> <?php echo "$" . round($r_product->getPrice(), 0); ?> </span>
+									</div>
+								</div>					
+							</div>
+						</li>
+					<?php endforeach; ?>
+					<li><div class="ordered_list_div"></li>
+					<li><div class="ordered_list_div"></li>
+					<li><div class="ordered_list_div"></li>
+			    </ul>
+		</div>
+		<img class="rp_next" src="<?php echo $this->getSkinUrl('images/m_down.gif')?>"/>
+		
+		
+		
+		
+	    <?php echo $this->getChildHtml('related') ?>
+    </div>
+</div>
+<script type="text/javascript">
+jQuery(function() {
+    jQuery(".relatedProducts").jCarouselLite({
+        btnNext: ".rp_next",
+        btnPrev: ".rp_prev",
+        circular: true,
+		vertical: true,
+		visible: 3
+    });
+    jQuery(".bestSellers").jCarouselLite({
+        btnNext: ".bs_next",
+        btnPrev: ".bs_prev",
+        circular: true,
+        visible: 4
+    });
+});
+</script>
+
+
+
+
+
+
+<?php
+
+$t_s = microtime(true);
+
+function t($start)
+{
+	echo microtime(true) - $start;
+}
+
+function getCategoryId($current_product = NULL)
+{ 
+	$category_list = $current_product->getCategoryCollection()->setStoreId($store_id);
+	$category_array = array();
+	foreach($category_list as $category)
+	{
+		if($category->isInRootCategoryList()) //The IF statement is to give the product's category on the CURRENT store, rather than all stores in Magento
+		{
+		$category_array[$category->getLevel()] = $category->getId();
+		}
+	}
+	ksort($category_array);
+	$category_id = end($category_array);			 
+	return $category_id;
+}
+
+function getBestSellersCollection($current_product = NULL)
+{
+				$collection = Mage::getModel('catalog/product')->getCollection()->addAttributeToSelect('*');
+			
+				$collection->clear()->getSelect()->joinLeft(array('sfoi'=> Mage::getSingleton('core/resource')->getTableName('sales/order_item')), 'e.entity_id = sfoi.product_id', 'qty_ordered')
+		->columns('SUM(sfoi.qty_ordered) AS qty')
+		->group('e.entity_id')
+		->order(array('qty DESC'))
+		->limit(15); //SORT BY BEST SELLERS
+		
+				$collection->addCategoryFilter(Mage::getModel('catalog/category')->load(getCategoryId($current_product))); //FILTER ITEMS BY THE CATEGORY
+                $collection->addAttributeToFilter('entity_id', array('neq' => $current_product->getId())); //CURRENT PRODUCT DOES NOT SHOW BECAUSE THEY'RE SIMILAR BEST-SELLERS
+                $collection->setVisibility(Mage::getSingleton('catalog/product_visibility')->getVisibleInCatalogIds());//ONLY SHOW VISIBLE PRODUCTS IN CATALOG
+			                
+                return $collection;
+}                
+  
+  
+  
+  
+                
+function getRelatedProductsCollection($current_product = NULL)
+{
+		
+		//CREATE A COLLECTION OF OBJECTS THAT ARE FILTERED 
+		$collection = Mage::getModel('catalog/product')->getCollection()->addAttributeToSelect('*');
+		$collection
+		->addCategoryFilter(Mage::getModel('catalog/category')->load(getCategoryId($current_product)))  //Filters By Category
+		->setVisibility(Mage::getSingleton('catalog/product_visibility')->getVisibleInCatalogIds()) //Only show items that are visible in catalog
+		->addAttributeToFilter('entity_id', array('neq' => $current_product->getId())); //Current Product will NOT show as a "similar" product
+		$collection->clear()->getSelect()->order('rand()')->limit(10);
+		return $collection;	
+
+}	 
+
+
+
+?>

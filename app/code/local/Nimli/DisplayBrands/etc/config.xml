@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <modules>
+    <Nimli_DisplayBrands>
+      <version>0.1.0</version>
+    </Nimli_DisplayBrands>
+  </modules>
+  <global>
+    <blocks>
+      <Nimli_DisplayBrands>
+        <class>Nimli_DisplayBrands_Block</class>
+      </Nimli_DisplayBrands>
+    </blocks>
+  </global>
+  <frontend>
+    <routers>
+      <displaybrands>
+        <use>standard</use>
+        <args>
+          <module>Nimli_DisplayBrands</module>
+          <frontName>d</frontName>
+        </args>
+      </displaybrands>
+    </routers>
+    	<layout>
+        <updates>
+           <Nimli_DisplayBrands>
+              <file>display.xml</file>
+           </Nimli_DisplayBrands>
+        </updates>
+      </layout>
+  </frontend>
+</config>

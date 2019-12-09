@@ -1,0 +1,135 @@
+<?php
+//PRODUCT MODEL
+$product_model = Mage::getModel('catalog/product');
+
+?>
+
+<?php //if(strval($this->getValue()) == 'none') {return false;} ?>
+
+ 
+ 
+ 
+ 
+ 
+<?php $_productCollection = $this->getLoadedProductCollection(); ?>
+
+
+
+			
+
+<?php if(!$_productCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<?php else: ?>
+<div class="category-products">
+    <?php //echo $this->getToolbarHtml() ?>
+    <?php // List mode ?>
+    <?php if($this->getMode()!='grid'): ?>
+    <?php $_iterator = 0; ?>
+    <ol class="products-list" id="products-list">
+    <?php foreach ($_productCollection as $_product): ?>
+        <li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
+            <?php // Product Image ?>
+            <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'image')) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize(155,242); ?>" width="155" alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'image')) ?>" /></a>
+            <?php // Product description ?>
+            
+            <div class="product-shop">
+                <div class="f-fix">
+					
+                    <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName())?></a></h2>
+                    <?php if($_product->getRatingSummary()): ?>
+                    <?php echo $this->getReviewsSummaryHtml($_product) ?>
+                    <?php endif; ?>
+                    <?php echo $this->getPriceHtml($_product, true) ?>
+                    <?php if($_product->isSaleable()): ?>
+                        <p><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button></p>
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+                    <div class="desc std">
+                        <?php echo $_product->getShortDescription() ?>
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>" class="link-more"><?php echo $this->__('Learn More') ?></a>
+                    </div>
+                    <!--ul class="add-to-links">
+                        <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                            <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                        <?php endif; ?>
+                        <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                            <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+                        <?php endif; ?>
+                    </ul-->
+                </div>
+            </div>
+        </li>
+    <?php endforeach; ?>
+    </ol>
+    <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+    <?php else: ?>
+
+    <?php // Grid Mode ?>
+
+    <?php $_collectionSize = $_productCollection->count() ?>
+    <?php $_columnCount = 4;//$_columnCount = $this->getColumnCount(); ?>
+    
+    <?php 
+	$color_item_id = Mage::getModel('eav/config')->getAttribute('catalog_product', 'color_item')->getId();
+	$configurable_model = Mage::getModel('catalog/product_type_configurable');
+	//$eco_attribute_id = Mage::getModel('eav/config')->getAttribute('catalog_product', 'ecoattribute')->getId();
+	?>
+    
+    <?php $i=0; foreach ($_productCollection as $_product): ?>
+        <?php if ($i++%$_columnCount==0): ?>
+        <ul class="products-grid">
+        <?php endif ?>
+            <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(160, 250); ?>" width="160" alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" /></a>
+                
+                <div class="more_colors">
+                		&nbsp;
+                		<?php if($_product->isConfigurable()): ?>
+            			More Options
+						<?php endif; ?>
+				</div>
+				
+                <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h2>
+                <?php if($_product->getRatingSummary()): ?>
+                <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                <?php endif; ?>
+                
+                <div class="price-box">
+				<span class="regular-price">
+				<span class="price"><?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol() . round($_product->getFinalPrice(), 0)?></span>                
+				</span>
+				</div>
+				
+				<!-- ************** ECO ATTRIBUTE ICONS **************
+				<?php //if(empty($eco_attribute_id) == false): ?>
+				<div class="eco_attribute_icons">
+				<?php //$eco_attributes = $_product->getAttributeText('ecoattribute'); ?>
+				<?php //if(count($eco_attributes) == 1) $eco_attributes = array($eco_attributes); ?>
+				<?php //if($eco_attributes[0] == false) $eco_attributes = array('Spacer'); ?>				
+				<?php //foreach($eco_attributes as $eco_attribute): ?>
+				<a href="#">
+                        <img border="0" title="<?php //echo $eco_attribute ?>" src="<?php //echo $this->getSkinUrl('images/' . $eco_attribute_image[$eco_attribute]) ?>"/>
+                </a> 
+				<?php //endforeach; ?>
+				<?php //$product_model->reset(); ?>
+				</div>
+				<?php //endif; ?>
+				 ************** END ECO ATTRIBUTE ICONS ************** -->
+
+            </li>
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </ul>
+        <?php endif ?>
+        <?php endforeach; ?>
+        <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+    <?php endif; ?>
+
+    <div class="toolbar-bottom">
+        <?php //echo $this->getToolbarHtml() ?>
+    </div>
+</div>
+<?php endif; ?>
+<br /><br /><br /><br /><br />

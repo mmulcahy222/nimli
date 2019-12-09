@@ -1,0 +1,6 @@
+<?php  
+$product_list_block = new Mage_Catalog_Block_Product_List;
+$product_collection = $product_list_block->getLoadedProductCollection();
+$this->setCollection($product_collection);
+echo $this->getPagerHtml();
+?>

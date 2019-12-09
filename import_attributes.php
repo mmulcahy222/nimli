@@ -1,0 +1,135 @@
+<?php
+
+set_include_path(get_include_path() . PATH_SEPARATOR . 'C:/makeshift/files/saffron');
+
+require_once ("/app/Mage.php"); //to do Magento Library functions
+Mage::app('admin');
+
+//connect and choose database
+$c = mysql_connect('localhost', 'root', '');
+mysql_select_db('puck', $c);
+
+function get_all_attributes()
+{
+    $attributes = array();
+    $sql_array[] = "SELECT sizelabel FROM item GROUP BY sizelabel";
+    $sql_array[] = "SELECT colorlabel FROM item GROUP BY colorlabel";
+    $sql_array[] = "SELECT stylelabel FROM item GROUP BY stylelabel";
+    foreach ($sql_array as $sql)
+    {
+        $result = mysql_query($sql);
+        while ($row = mysql_fetch_row($result))
+        {
+            $row[0] = ucwords($row[0]);
+            if (!in_array($row[0], $attributes))
+            {
+                array_push($attributes, $row[0]);
+            }
+        }
+    }
+    sort($attributes);
+    unset($attributes[array_search('', $options)]);
+    return $attributes;
+}
+
+function get_all_options($configurable_attribute)
+{
+    $options = array();
+    $sql_array[] = "SELECT sizedescription FROM item WHERE sizelabel = '$configurable_attribute' GROUP BY sizedescription";
+    $sql_array[] = "SELECT colordescription FROM item WHERE colorlabel = '$configurable_attribute' GROUP BY colordescription";
+    $sql_array[] = "SELECT styledescription FROM item WHERE stylelabel = '$configurable_attribute' GROUP BY styledescription";
+    foreach ($sql_array as $sql)
+    {
+        $result = mysql_query($sql);
+        while ($row = mysql_fetch_row($result))
+        {
+            $row[0] = ucwords($row[0]);
+            $row[0] = str_replace(array('|2', '|'), "", $row[0]);
+            if (!in_array($row[0], $options))
+            {
+                array_push($options, $row[0]);
+            }
+        }
+    }
+    sort($options);
+    unset($options[array_search('', $options)]);
+    return $options;
+}
+
+function get_attributes_with_options()
+{
+    $attributes_with_options = array();
+    $all_attributes = get_all_attributes();
+    foreach ($all_attributes as $attribute)
+    {
+    	$clean_attribute = str_replace(array('|2', '|'), "", $attribute);
+    	if($clean_attribute == ''){$clean_attribute = 'attribute';}
+    	if(ucwords($clean_attribute) == 'Color'){$clean_attribute = 'color_item'; }
+        $attributes_with_options[$clean_attribute] = (substr_count($attribute, "|") >= 1) ? array_merge($attributes_with_options[$clean_attribute], get_all_options($attribute)) : get_all_options($attribute);
+        echo "$attribute\n";
+        $attributes_with_options[$clean_attribute] = array_unique($attributes_with_options[$clean_attribute]);
+        sort($attributes_with_options[$clean_attribute]);
+    }
+    return $attributes_with_options;
+}
+
+function add_configurable_attribute($name)
+{
+    $attribute = Mage::getModel('catalog/resource_eav_attribute');
+    $attribute->addData(array('entity_type_id' => Mage::getModel('eav/entity')->
+        setType('catalog_product')->getTypeId(), 'attribute_code' => strtolower($name),
+        'attribute_model' => null, 'backend_model' => null, 'backend_type' => 'int',
+        'backend_table' => null, 'frontend_model' => null, 'frontend_input' => 'select',
+        'frontend_label' => ucwords($name), 'frontend_class' => null, 'source_model' =>
+        'eav/entity_attribute_source_table', 'is_required' => '0', 'is_user_defined' =>
+        '1', 'default_value' => '', 'is_unique' => '0', 'note' => '',
+        'frontend_input_renderer' => null, 'is_global' => '1', 'is_visible' => '1',
+        'is_searchable' => '0', 'is_filterable' => '0', 'is_comparable' => '0',
+        'is_visible_on_front' => '0', 'is_html_allowed_on_front' => '1',
+        'is_used_for_price_rules' => '0', 'is_filterable_in_search' => '0',
+        'used_in_product_listing' => '0', 'used_for_sort_by' => '0', 'is_configurable' =>
+        '1', 'apply_to' => '', 'is_visible_in_advanced_search' => '0',
+        'is_wysiwyg_enabled' => '0', 'is_used_for_promo_rules' => '0'));
+    $attribute->setIsUserDefined(1);
+    try
+    {
+        $attribute->save();
+        echo "$name is now a Magento Attribute";
+    }
+    catch (exception $e)
+    {
+        echo '<p>Sorry, error occured while trying to save the attribute. Error: ' . $e->
+            getMessage() . '</p>' . "\n";
+    }
+}
+
+function add_options_to_attribute($name, $options) //options is an array of values
+{
+	$count = 1;
+    $attribute = Mage::getResourceModel('eav/entity_attribute_collection')->
+        setCodeFilter($name)->getFirstItem();
+    $optionArr = array('value' => array(), 'order' => array(), 'delete' => array());
+    foreach ($options as $key => $value)
+    {
+        $optionArr['value']['option_' . $key] = array($value, $value);
+        $optionArr['order']['option_' . $key] = $count++;
+    }
+    var_export($optionArr);
+    $attribute->setOption($optionArr);
+    $attribute->save();
+}
+
+function add_attributes_with_options_to_magento()
+{
+	$attributes_with_options = get_attributes_with_options();
+	foreach($attributes_with_options as $key => $value)
+	{
+		add_configurable_attribute($key);
+		add_options_to_attribute($key, $value);
+	}
+}
+
+
+add_attributes_with_options_to_magento();
+
+?>

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+		<reference name="head">
+			<block type="page/html" name="top.Js" as="topJs" template="em_quickshop/page/html/jshead.phtml"/>
+			<action method="addCss"><stylesheet>css/em_quickshop.css</stylesheet></action>
+			<action method="addCss"><stylesheet>css/jquery.fancybox-2.1.5.css</stylesheet></action>
+			<!-- <action method="addItem"><type>skin_js</type><name>js/jquery.js</name></action> -->
+			<action method="addItem"><type>skin_js</type><name>js/jquery.fancybox-2.1.5.pack.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/em_quickshop.js</name></action>
+		</reference>
+    </default>
+	
+	
+	
+	
+	<quickshop_index_view>
+		<update handle="catalog_product_view"/> 
+	</quickshop_index_view>
+	
+	<quickshop_index_view_FINAL>
+		<reference name="root">
+            <action method="setTemplate"><template>em_quickshop/product.phtml</template></action>
+			<action method="setIsHandle"><applied>1</applied></action>
+        </reference>
+        <reference name="head">
+		        	<action method="addCss"><stylesheet>css/em_quickshop_frame.css</stylesheet></action>
+        </reference>
+        <reference name="content">
+      
+      
+     
+        <remove name="product.info"/>
+
+        <block type="catalog/product_view" name="falt" template="custom/quick_shop.phtml">
+            <block type="catalog/product_view_type_configurable" name="product.info.options.configurable" as="options_configurable" before="-" template="catalog/product/view/type/options/configurable.phtml"/>
+        </block>
+ 
+
+			    
+			    
+        </reference>
+        
+	</quickshop_index_view_FINAL>
+	
+</layout> 
