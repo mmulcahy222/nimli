@@ -16,7 +16,7 @@ http://www.newpaltzartist.com/saffron/pets.html?trace=1
 
 In 2013, I got my Magento Certification and I have 2 years of work experience in Magento. I do not even bother with PHP or Magento anymore, and it was what I did in my past life. It was my very first work experience and it was a time I was knee deep in software engineering day-in and day-out. Looking over some of my past code, I cringe at what I put, but from my past experiences I have prospered. Now that I picked up Python in 2016, it has made me a true Software Developer and PHP isn't really the neatest language for design patterns & abstract object-oriented proramming.
 
-I made this e-commerce store for the company Nimli in 2011. Since they changed their site (or went out of business), I saved the store I did for them for my own purposes, and I made the whole front-end AND back-end for them. I made an fully functioning entire e-commerce store in my earliest days as a professional developer.
+I made this e-commerce store for the company Nimli. Since they changed their site (or went out of business), I saved the store I did for them for my own purposes, and I made the whole front-end AND back-end for them. I made an fully functioning entire e-commerce store in my earliest days as a professional developer.
 
 Anything under "app" is customized code that overridden the default features in the "app/code/core" directory
 
