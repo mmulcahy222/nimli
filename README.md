@@ -2,7 +2,7 @@
 
 Visit my e-commerce store at 
 
-Nimli's site from 2011:
+Nimli's site:
 www.newpaltzartist.com/saffron
 
 Template Hints by Query String (not by admin):
